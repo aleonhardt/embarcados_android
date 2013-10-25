@@ -2,9 +2,15 @@ package com.embedded.energy_comparisson;
 
 import java.util.ArrayList;
 
+
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 public class MainActivity extends Activity
 {
 	public int midpoint(int n1, int n2)
@@ -58,15 +64,53 @@ public class MainActivity extends Activity
 			}
 		}
 	}
+	
+	public int[] createArray(int numberElements)
+	{
+		int[] array=new int[numberElements];
+		
+		for(int i=0; i<numberElements; i++)
+			array[i]=i;
+		
+		return array;
+	}
+	
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) 
 	{
 		super.onCreate(savedInstanceState);
-		int[] array = {0,1,2,3,4,5,6,7,8};
-		TextView tv = new TextView(this);
+		setContentView(R.layout.activity_main);
 		
-		tv.setText(Integer.toString(recursiveBinarySearch(array, 2, 0, 8)));
-		setContentView(tv);
+		final Button buttonGo = (Button)findViewById(R.id.buttonGo);
+		
+		
+		final TextView result = (TextView)findViewById(R.id.result);
+		final RadioGroup chooseAlg = (RadioGroup)findViewById(R.id.chooseAlg);
+		final EditText numberElements = (EditText)findViewById(R.id.numberElements);
+		
+				
+		buttonGo.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+            	if(chooseAlg.getCheckedRadioButtonId()>0 && numberElements.getText().length()>0) //se escolheu um algoritmo e colocou o num de elementos do vetor
+            	{
+	            	int numElements = Integer.parseInt(numberElements.getText().toString());
+	        		int[] array = createArray(numElements);
+	        		String resultString="";
+	        		
+	        		if(chooseAlg.getCheckedRadioButtonId()==R.id.algIterative)
+	        			resultString = Integer.toString(iterativeBinarySearch(array, 2, 0, numElements));
+	        		else if (chooseAlg.getCheckedRadioButtonId()==R.id.algRecursive)
+	        			resultString = Integer.toString(recursiveBinarySearch(array, 2, 0, numElements));
+	        		result.setText(resultString);
+            	}
+            	else
+            		Toast.makeText(getApplicationContext(), "Choose an algorithm and the number of elements",Toast.LENGTH_SHORT).show();
+            }
+        });
+		
+				
+		
+		
 	}
 } 
