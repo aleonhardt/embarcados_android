@@ -10,13 +10,21 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".MainActivity" >
 
-    
+     <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:text="Binary Search"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
     <RadioGroup
         android1:id="@+id/chooseAlg"
         android1:layout_width="wrap_content"
         android1:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true" >
+        android:layout_below="@+id/title"
+         >
 
 	       <RadioButton
 	        android:id="@+id/algIterative"
@@ -65,12 +73,12 @@
         android:text="GO" />
 
     <TextView
-        android:id="@+id/textResult"
+        android:id="@+id/textKey"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignRight="@+id/buttonGo"
         android:layout_centerVertical="true"
-        android:text="Result"
+        android:text="Key"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <TextView
@@ -78,7 +86,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/textResult"
-        android:layout_below="@+id/textResult"
+        android:layout_below="@+id/textKey"
         android:layout_marginTop="32dp"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
