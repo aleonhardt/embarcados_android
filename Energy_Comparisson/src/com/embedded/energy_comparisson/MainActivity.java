@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.Debug;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -97,11 +98,22 @@ public class MainActivity extends Activity
 	            	int numElements = Integer.parseInt(numberElements.getText().toString());
 	        		int[] array = createArray(numElements);
 	        		String resultString="";
+	        		String fileName="";
 	        		
 	        		if(chooseAlg.getCheckedRadioButtonId()==R.id.algIterative)
+	        			{
+	        			fileName="iterative_"+numElements+"_elements";
+	        			Debug.startMethodTracing(fileName);
 	        			resultString = Integer.toString(iterativeBinarySearch(array, 2, 0, numElements));
+	        			Debug.stopMethodTracing();
+	        			}
 	        		else if (chooseAlg.getCheckedRadioButtonId()==R.id.algRecursive)
+	        			{
+	        			fileName="recursive_"+numElements+"_elements";
+	        			Debug.startMethodTracing(fileName);
 	        			resultString = Integer.toString(recursiveBinarySearch(array, 2, 0, numElements));
+	        			Debug.stopMethodTracing();
+	        			}
 	        		result.setText(resultString);
             	}
             	else
