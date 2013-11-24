@@ -22,7 +22,7 @@ public class MusicTone {
 	        		
 	           }
 
-	    public void addTone(final int freq) {
+	    public void addPureSine(final int freq) {
 	    	
 	    	double twopi = 8.*Math.atan(1.);
 	        double phase = 0.0;
@@ -30,6 +30,21 @@ public class MusicTone {
 	        // fill out the array
 	        for (int i = 0; i < numSamples; ++i) {
 	        	sample[i] = (short) (amp*Math.sin(phase));
+	            phase += twopi*freq/sampleRate;
+	        }
+	        	     	        
+	        audioTrack.write(sample, 0, numSamples);
+	        
+	    }
+	    
+	    public void addSquareWave(final int freq) {
+	    	
+	    	double twopi = 8.*Math.atan(1.);
+	        double phase = 0.0;
+	        int amp = 10000;
+	        // fill out the array
+	        for (int i = 0; i < numSamples; ++i) {
+	        	sample[i] = (short) ((amp*Math.sin(phase))+(amp*Math.sin(3*phase)/3)+(amp*Math.sin(5*phase)/5)+(amp*Math.sin(7*phase)/7)+(amp*Math.sin(9*phase)/9));
 	            phase += twopi*freq/sampleRate;
 	        }
 	        	     	        
