@@ -18,7 +18,7 @@ public class MusicSynth extends Activity implements SensorEventListener {
 	final Gyroscoping gyroMath = new Gyroscoping();
 	private SensorManager mSensorManager;
 	private Sensor mAccelerometer, mGyroscope;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -27,10 +27,10 @@ public class MusicSynth extends Activity implements SensorEventListener {
 		mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
 		mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
 		mGyroscope = mSensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
-		
+
 		mSensorManager.registerListener(this, mAccelerometer, SensorManager.SENSOR_DELAY_NORMAL);
 		mSensorManager.registerListener(this, mGyroscope, SensorManager.SENSOR_DELAY_NORMAL);
-		
+
 		final Button sing = (Button)findViewById(R.id.buttonSing);
 
 		sing.setOnClickListener(new View.OnClickListener() {
@@ -38,7 +38,7 @@ public class MusicSynth extends Activity implements SensorEventListener {
 
 				music.addPureSine(440);
 				music.addSquareWave(220);
-				
+
 
 			}
 		});
@@ -63,12 +63,25 @@ public class MusicSynth extends Activity implements SensorEventListener {
 		// TODO Auto-generated method stub
 
 		int whatToPlay =gyroMath.doTheMath(event);
-		
+
 		if(whatToPlay ==Gyroscoping.PLAY_SINE)
 			music.addPureSine(440);
 		if(whatToPlay ==Gyroscoping.PLAY_SQUARE)
-				music.addSquareWave(220);
-		
+			music.addSquareWave(220);
+
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		mSensorManager.registerListener(this, mAccelerometer, SensorManager.SENSOR_DELAY_NORMAL);
+		mSensorManager.registerListener(this, mGyroscope, SensorManager.SENSOR_DELAY_NORMAL);
+	}
+	
+	@Override
+	protected void onPause() {
+		super.onPause();
+		mSensorManager.unregisterListener(this);
 	}
 
 }
