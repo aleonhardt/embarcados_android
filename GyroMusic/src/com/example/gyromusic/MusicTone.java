@@ -7,7 +7,7 @@ import android.media.AudioTrack;
 public class MusicTone {
 
 	   private final int sampleRate = 44100;
-	    private final int numSamples =AudioTrack.getMinBufferSize(sampleRate, AudioFormat.CHANNEL_OUT_MONO, 
+	    private final int numSamples =AudioTrack.getMinBufferSize(sampleRate, AudioFormat.CHANNEL_OUT_STEREO, 
 	    		AudioFormat.ENCODING_PCM_16BIT);
 	    private   short sample[] = new short [numSamples];
 
@@ -44,7 +44,7 @@ public class MusicTone {
 	        int amp = 10000;
 	        // fill out the array
 	        for (int i = 0; i < numSamples; ++i) {
-	        	sample[i] = (short) ((amp*Math.sin(phase))+(amp*Math.sin(3*phase)/3)+(amp*Math.sin(5*phase)/5)+(amp*Math.sin(7*phase)/7)+(amp*Math.sin(9*phase)/9));
+	        	sample[i] = (short) ((amp*Math.sin(phase))+(amp*Math.sin(3*phase)/3)+(amp*Math.sin(5*phase)/5)+(amp*Math.sin(7*phase)/7)+(amp*Math.sin(9*phase)/9)+(amp*Math.sin(11*phase)/11));
 	            phase += twopi*freq/sampleRate;
 	        }
 	        	     	        
