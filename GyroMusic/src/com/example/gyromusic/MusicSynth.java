@@ -18,6 +18,7 @@ public class MusicSynth extends Activity implements SensorEventListener {
 	final Gyroscoping gyroMath = new Gyroscoping();
 	private SensorManager mSensorManager;
 	private Sensor mAccelerometer, mGyroscope;
+	Thread musicThread = new Thread(music);;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -69,8 +70,8 @@ public class MusicSynth extends Activity implements SensorEventListener {
 			music.frequencyDown();
 		if(whatToPlay == Gyroscoping.PLAY_SQUARE)
 			{
-			Thread musicThread = new Thread(music);
-			musicThread.start();
+			if(!musicThread.isAlive())
+				musicThread.start();
 			}
 
 	}

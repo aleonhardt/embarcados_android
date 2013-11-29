@@ -79,6 +79,12 @@ public class MusicTone implements Runnable {
 	        audioTrack.stop();
 	    }
 	    
+	    public synchronized void restart() {
+	    	
+	    	finished=false;
+	        audioTrack.play();
+	    }
+	    
 	    @Override
 	    public void run(){
 	    	while(!finished)
