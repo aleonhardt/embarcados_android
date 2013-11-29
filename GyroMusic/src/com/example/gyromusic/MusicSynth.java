@@ -36,8 +36,7 @@ public class MusicSynth extends Activity implements SensorEventListener {
 		sing.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 
-				music.addPureSine(440);
-				music.addSquareWave(220);
+				music.stop();
 
 
 			}
@@ -64,10 +63,15 @@ public class MusicSynth extends Activity implements SensorEventListener {
 
 		int whatToPlay =gyroMath.doTheMath(event);
 
-		if(whatToPlay ==Gyroscoping.PLAY_SINE)
-			music.addPureSine(440);
-		if(whatToPlay ==Gyroscoping.PLAY_SQUARE)
-			music.addSquareWave(220);
+		if(whatToPlay ==Gyroscoping.FREQ_UP)
+			music.frequencyUp();
+		if(whatToPlay ==Gyroscoping.FREQ_DOWN)
+			music.frequencyDown();
+		if(whatToPlay == Gyroscoping.PLAY_SQUARE)
+			{
+			Thread musicThread = new Thread(music);
+			musicThread.start();
+			}
 
 	}
 	

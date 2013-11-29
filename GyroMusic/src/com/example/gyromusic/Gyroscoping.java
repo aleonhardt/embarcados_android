@@ -8,6 +8,8 @@ public class Gyroscoping {
 
 	public static final int PLAY_SQUARE = 1;
 	public static final int PLAY_SINE = 2;
+	public static final int FREQ_UP = 3;
+	public static final int FREQ_DOWN = 4;
 	public static final int ERROR = -1;
 
 	public Gyroscoping(){
@@ -32,7 +34,9 @@ public class Gyroscoping {
 			  linear_acceleration[2] = event.values[2] - gravity[2];
 			  
 			  if(linear_acceleration[0]>3)
-				  return PLAY_SINE;
+				  return FREQ_UP;
+			  else if(linear_acceleration[0]<-3)
+				  return FREQ_DOWN;
 			  else
 				  return ERROR;
 		}
