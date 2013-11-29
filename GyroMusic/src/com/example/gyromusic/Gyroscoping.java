@@ -11,6 +11,14 @@ public class Gyroscoping {
 	public static final int FREQ_UP = 3;
 	public static final int FREQ_DOWN = 4;
 	public static final int ERROR = -1;
+	
+	public static final int DO = 220;
+	public static final int RE = 247;
+	public static final int MI = 262;
+	public static final int FA = 294;
+	public static final int SOL = 330;
+	public static final int LA = 349;
+	public static final int SI = 392;
 
 	public Gyroscoping(){
 		
@@ -33,20 +41,34 @@ public class Gyroscoping {
 			  linear_acceleration[1] = event.values[1] - gravity[1];
 			  linear_acceleration[2] = event.values[2] - gravity[2];
 			  
+			  if(linear_acceleration[0]>5)
+				  return DO;
+			  else if(linear_acceleration[0]<-5)
+				  return RE;
+			  else if(linear_acceleration[1]>5)
+				  return MI;
+			  else if(linear_acceleration[1]<-5)
+				  return FA;
+			  else if(linear_acceleration[2]>15)
+				  return SOL;
+			  else if(linear_acceleration[2]<-15)
+				  return LA;
+/*
 			  if(linear_acceleration[0]>3)
 				  return FREQ_UP;
 			  else if(linear_acceleration[0]<-3)
 				  return FREQ_DOWN;
+			*/
 			  else
 				  return ERROR;
 		}
-		else if(event.sensor.getType() == Sensor.TYPE_GYROSCOPE)
+		/*else if(event.sensor.getType() == Sensor.TYPE_GYROSCOPE)
 		{
 			if(event.values[0]>3)
 				return PLAY_SQUARE;
 			else
 				return ERROR;
-		}
+		}*/
 		return ERROR;
 	}
 
