@@ -4,18 +4,22 @@ import android.media.AudioFormat;
 import android.media.AudioManager;
 import android.media.AudioTrack;
 
-public class MusicTone {
+public class MusicTone implements Runnable {
 
 	   private final int sampleRate = 44100;
 	    private final int numSamples =AudioTrack.getMinBufferSize(sampleRate, AudioFormat.CHANNEL_OUT_STEREO, 
 	    		AudioFormat.ENCODING_PCM_16BIT);
 	    private   short sample[] = new short [numSamples];
 
+	    private int frequency =440;
+	    private boolean finished = false;
+	   
+	    
 	    final AudioTrack audioTrack;
 
 	    public MusicTone() {
 	        audioTrack = new AudioTrack(AudioManager.STREAM_MUSIC,
-	                sampleRate, AudioFormat.CHANNEL_OUT_MONO,
+	                sampleRate, AudioFormat.CHANNEL_OUT_STEREO,
 	                AudioFormat.ENCODING_PCM_16BIT, numSamples,
 	                AudioTrack.MODE_STREAM);
 	        audioTrack.play();
@@ -52,8 +56,34 @@ public class MusicTone {
 	        
 	    }
 
+	    public synchronized void frequency(int fr) {
+
+	    	frequency = fr;
+
+	    	}
+	    public synchronized void frequencyUp() {
+
+	    	frequency = frequency+48;
+
+	    	}
 	  
-	    public void stop() {
+	    public synchronized void frequencyDown() {
+
+	    	frequency = frequency-48;
+
+	    	}
+	   
+	    public synchronized void stop() {
+	    	
+	    	finished=true;
 	        audioTrack.stop();
+	    }
+	    
+	    @Override
+	    public void run(){
+	    	while(!finished)
+	    	{
+	    		addPureSine(frequency);
+	    	}
 	    }
 }

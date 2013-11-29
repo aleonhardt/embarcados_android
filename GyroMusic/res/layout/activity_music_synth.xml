@@ -16,6 +16,6 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="SING FOR ME" />
+        android:text="STOP THIS NONSENSE" />
 
 </RelativeLayout>

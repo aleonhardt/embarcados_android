@@ -44,6 +44,7 @@ public class MusicSynth extends Activity implements SensorEventListener {
 				music.addPureSine(Gyroscoping.SOL);
 				music.addPureSine(Gyroscoping.LA);
 				music.addPureSine(Gyroscoping.SI);
+				music.stop();
 
 			}
 		});
@@ -90,6 +91,18 @@ public class MusicSynth extends Activity implements SensorEventListener {
 		
 		//if(whatToPlay ==Gyroscoping.PLAY_SQUARE)
 			//music.addSquareWave(220);
+/*
+
+		if(whatToPlay ==Gyroscoping.FREQ_UP)
+			music.frequencyUp();
+		if(whatToPlay ==Gyroscoping.FREQ_DOWN)
+			music.frequencyDown();
+		if(whatToPlay == Gyroscoping.PLAY_SQUARE)
+			{
+			Thread musicThread = new Thread(music);
+			musicThread.start();
+			}
+*/
 
 	}
 	
