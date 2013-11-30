@@ -9,7 +9,7 @@ public class MusicTone implements Runnable {
 	   private final int sampleRate = 44100;
 	    private final int numSamples =AudioTrack.getMinBufferSize(sampleRate, AudioFormat.CHANNEL_OUT_STEREO, 
 	    		AudioFormat.ENCODING_PCM_16BIT);
-	    private   short sample[] = new short [numSamples];
+	    private short sample[] = new short [numSamples];
 
 	    private int frequency =440;
 	    private boolean finished = false;
@@ -23,7 +23,7 @@ public class MusicTone implements Runnable {
 	                AudioFormat.ENCODING_PCM_16BIT, numSamples,
 	                AudioTrack.MODE_STREAM);
 	        audioTrack.play();
-	        		
+	       
 	           }
 
 	    public void addPureSine(final int freq) {
@@ -31,8 +31,12 @@ public class MusicTone implements Runnable {
 	    	double twopi = 8.*Math.atan(1.);
 	        double phase = 0.0;
 	        int amp = 10000;
+	        int smooth = numSamples / 15;
+   
 	        // fill out the array
 	        for (int i = 0; i < numSamples; ++i) {
+	        	
+	        	amp = smoothAmp(i, numSamples, smooth);
 	        	sample[i] = (short) (amp*Math.sin(phase));
 	            phase += twopi*freq/sampleRate;
 	        }
@@ -46,14 +50,43 @@ public class MusicTone implements Runnable {
 	    	double twopi = 8.*Math.atan(1.);
 	        double phase = 0.0;
 	        int amp = 10000;
+	        int smooth = numSamples / 15;
+
 	        // fill out the array
+	        
 	        for (int i = 0; i < numSamples; ++i) {
+	        	
+	        	amp = smoothAmp(i, numSamples, smooth);
 	        	sample[i] = (short) ((amp*Math.sin(phase))+(amp*Math.sin(3*phase)/3)+(amp*Math.sin(5*phase)/5)+(amp*Math.sin(7*phase)/7)+(amp*Math.sin(9*phase)/9)+(amp*Math.sin(11*phase)/11));
 	            phase += twopi*freq/sampleRate;
 	        }
+	        
+        
+	        /*for (int i = 0; i < numSamples; ++i) {
+
+	        	//amp = smoothAmp(amp, i, numSamples);
+	        	sample[i] = (short) ((amp*Math.sin(phase))+(amp*Math.sin(3*phase)/3)+(amp*Math.sin(5*phase)/5)+(amp*Math.sin(7*phase)/7)+(amp*Math.sin(9*phase)/9)+(amp*Math.sin(11*phase)/11));
+	            phase += twopi*freq/sampleRate;
+	        }*/
 	        	     	        
 	        audioTrack.write(sample, 0, numSamples);
 	        
+	    
+	    }    	
+	    
+	    // smooth beginning/end of sound wave
+	    public int smoothAmp(int index, int numSamples, int smooth)
+	    {
+	    	if(index < smooth)
+	    		return 10000*index/smooth;
+	    	else if(index > numSamples - smooth)
+	    	{
+	    		return 10000*(numSamples - index)/smooth;
+	    	}
+	    	else
+	    	{
+	    		return 10000;
+	    	}
 	    }
 
 	    public synchronized void frequency(int fr) {

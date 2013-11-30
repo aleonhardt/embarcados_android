@@ -38,13 +38,13 @@ public class MusicSynth extends Activity implements SensorEventListener {
 		sing.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 
-				music.addPureSine(Gyroscoping.DO);
-				music.addPureSine(Gyroscoping.RE);
-				music.addPureSine(Gyroscoping.MI);
-				music.addPureSine(Gyroscoping.FA);
-				music.addPureSine(Gyroscoping.SOL);
-				music.addPureSine(Gyroscoping.LA);
-				music.addPureSine(Gyroscoping.SI);
+				music.addSquareWave(Gyroscoping.DO);
+				music.addSquareWave(Gyroscoping.RE);
+				music.addSquareWave(Gyroscoping.MI);
+				music.addSquareWave(Gyroscoping.FA);
+				music.addSquareWave(Gyroscoping.SOL);
+				music.addSquareWave(Gyroscoping.LA);
+				music.addSquareWave(Gyroscoping.SI);
 				music.stop();
 
 			}
