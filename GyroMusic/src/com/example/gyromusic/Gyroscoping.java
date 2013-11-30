@@ -6,7 +6,7 @@ import android.hardware.SensorEvent;
 
 public class Gyroscoping {
 
-	public static final int PLAY_SQUARE = 1;
+	public static final int PLAY = 1;
 	public static final int PLAY_SINE = 2;
 	public static final int FREQ_UP = 3;
 	public static final int FREQ_DOWN = 4;
@@ -62,13 +62,13 @@ public class Gyroscoping {
 			  else
 				  return ERROR;
 		}
-		/*else if(event.sensor.getType() == Sensor.TYPE_GYROSCOPE)
+		else if(event.sensor.getType() == Sensor.TYPE_GYROSCOPE)
 		{
 			if(event.values[0]>3)
-				return PLAY_SQUARE;
+				return PLAY;
 			else
 				return ERROR;
-		}*/
+		}
 		return ERROR;
 	}
 

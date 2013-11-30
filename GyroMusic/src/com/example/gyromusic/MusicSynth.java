@@ -45,6 +45,14 @@ public class MusicSynth extends Activity implements SensorEventListener {
 				music.addSquareWave(Gyroscoping.SOL);
 				music.addSquareWave(Gyroscoping.LA);
 				music.addSquareWave(Gyroscoping.SI);
+				/*music.addPureSine(Gyroscoping.DO);
+				music.addPureSine(Gyroscoping.RE);
+				music.addPureSine(Gyroscoping.MI);
+				music.addPureSine(Gyroscoping.FA);
+				music.addPureSine(Gyroscoping.SOL);
+				music.addPureSine(Gyroscoping.LA);
+				music.addPureSine(Gyroscoping.SI);
+				*/
 				music.stop();
 
 			}
@@ -74,35 +82,33 @@ public class MusicSynth extends Activity implements SensorEventListener {
 		int whatToPlay = gyroMath.doTheMath(event);
 
 		if(whatToPlay ==Gyroscoping.DO)
-			music.addSquareWave(Gyroscoping.DO);
+			music.frequency(Gyroscoping.DO);
 		else if(whatToPlay ==Gyroscoping.RE)
-			music.addSquareWave(Gyroscoping.RE);
+			music.frequency(Gyroscoping.RE);
 		else if(whatToPlay ==Gyroscoping.MI)
-			music.addSquareWave(Gyroscoping.MI);		
+			music.frequency(Gyroscoping.MI);		
 		else if(whatToPlay ==Gyroscoping.FA)
-			music.addSquareWave(Gyroscoping.FA);
+			music.frequency(Gyroscoping.FA);
 		else if(whatToPlay ==Gyroscoping.SOL)
-			music.addSquareWave(Gyroscoping.SOL);
+			music.frequency(Gyroscoping.SOL);
 		else if(whatToPlay ==Gyroscoping.LA)
-			music.addSquareWave(Gyroscoping.LA);
+			music.frequency(Gyroscoping.LA);
 		else if(whatToPlay ==Gyroscoping.SI)
-			music.addSquareWave(Gyroscoping.SI);
+			music.frequency(Gyroscoping.SI);
 		
-		//music.addSquareWave(whatToPlay);
+		if(whatToPlay == Gyroscoping.PLAY)
+		{
+		if(!musicThread.isAlive())
+			musicThread.start();
+		}
 		
-		//if(whatToPlay ==Gyroscoping.PLAY_SQUARE)
-			//music.addSquareWave(220);
 /*
 
 		if(whatToPlay ==Gyroscoping.FREQ_UP)
 			music.frequencyUp();
 		if(whatToPlay ==Gyroscoping.FREQ_DOWN)
 			music.frequencyDown();
-		if(whatToPlay == Gyroscoping.PLAY_SQUARE)
-			{
-			if(!musicThread.isAlive())
-				musicThread.start();
-			}
+		
 */
 
 	}
