@@ -6,7 +6,10 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
@@ -18,7 +21,7 @@ public class MusicSynth extends Activity implements SensorEventListener {
 	final Gyroscoping gyroMath = new Gyroscoping();
 	private SensorManager mSensorManager;
 	private Sensor mAccelerometer, mGyroscope;
-	Thread musicThread = new Thread(music);;
+	Thread musicThread = new Thread(music);
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +35,11 @@ public class MusicSynth extends Activity implements SensorEventListener {
 		mSensorManager.registerListener(this, mAccelerometer, SensorManager.SENSOR_DELAY_NORMAL);
 		mSensorManager.registerListener(this, mGyroscope, SensorManager.SENSOR_DELAY_NORMAL);
 
+		// Register our receiver for the ACTION_SCREEN_OFF action. This will make our receiver
+        // code be called whenever the phone enters standby mode.
+        IntentFilter filter = new IntentFilter(Intent.ACTION_SCREEN_OFF);
+        registerReceiver(mReceiver, filter);
+		
 		final Button sing = (Button)findViewById(R.id.buttonSing);
 	
 
@@ -113,6 +121,20 @@ public class MusicSynth extends Activity implements SensorEventListener {
 
 
 	}
+	
+	 // BroadcastReceiver for handling ACTION_SCREEN_OFF.
+    public BroadcastReceiver mReceiver = new BroadcastReceiver() {
+        @Override
+ public void onReceive(Context context, Intent intent) {
+            // Check action just to be on the safe side.
+            if (intent.getAction().equals(Intent.ACTION_SCREEN_OFF)) {
+                // Unregisters the listener and registers it again.
+            	mSensorManager.unregisterListener(MusicSynth.this);
+            	mSensorManager.registerListener(MusicSynth.this, mAccelerometer, SensorManager.SENSOR_DELAY_NORMAL);
+        		mSensorManager.registerListener(MusicSynth.this, mGyroscope, SensorManager.SENSOR_DELAY_NORMAL);
+            }
+ }
+    };
 	
 	@Override
 	protected void onResume() {

@@ -9,10 +9,11 @@ public class MusicTone implements Runnable {
 	public final static int[] NOTES = {Gyroscoping.DO, Gyroscoping.RE, Gyroscoping.MI,
 		Gyroscoping.FA, Gyroscoping.SOL, Gyroscoping.LA, Gyroscoping.SI};
 	
-	
+	public final static int TIME = 3;
+		
 	   private final int sampleRate = 44100;
 	    private final int numSamples =AudioTrack.getMinBufferSize(sampleRate, AudioFormat.CHANNEL_OUT_STEREO, 
-	    		AudioFormat.ENCODING_PCM_16BIT);
+	    		AudioFormat.ENCODING_PCM_16BIT)*TIME;
 	    private short sample[] = new short [numSamples];
 
 	    private int frequency =5;
