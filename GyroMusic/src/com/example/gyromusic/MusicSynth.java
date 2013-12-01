@@ -38,6 +38,7 @@ public class MusicSynth extends Activity implements SensorEventListener {
 		sing.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 
+				/*
 				music.addSquareWave(Gyroscoping.DO);
 				music.addSquareWave(Gyroscoping.RE);
 				music.addSquareWave(Gyroscoping.MI);
@@ -72,7 +73,7 @@ public class MusicSynth extends Activity implements SensorEventListener {
 	@Override
 	public void onAccuracyChanged(Sensor sensor, int accuracy) {
 		// TODO Auto-generated method stub
-		gyroMath.accuracy(sensor,accuracy);
+		
 	}
 
 	@Override
@@ -102,14 +103,14 @@ public class MusicSynth extends Activity implements SensorEventListener {
 			musicThread.start();
 		}
 		
-/*
+
 
 		if(whatToPlay ==Gyroscoping.FREQ_UP)
 			music.frequencyUp();
 		if(whatToPlay ==Gyroscoping.FREQ_DOWN)
 			music.frequencyDown();
 		
-*/
+
 
 	}
 	

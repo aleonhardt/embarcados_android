@@ -53,12 +53,7 @@ public class Gyroscoping {
 				  return SOL;
 			  else if(linear_acceleration[2]<-15)
 				  return LA;
-/*
-			  if(linear_acceleration[0]>3)
-				  return FREQ_UP;
-			  else if(linear_acceleration[0]<-3)
-				  return FREQ_DOWN;
-			*/
+
 			  else
 				  return ERROR;
 		}
@@ -66,15 +61,16 @@ public class Gyroscoping {
 		{
 			if(event.values[0]>3)
 				return PLAY;
-			else
+			else if(event.values[1]>3)
+				return FREQ_UP;
+			else if(event.values[1]<-3)
+				return FREQ_DOWN;
+			
 				return ERROR;
 		}
 		return ERROR;
 	}
 
-	public void accuracy(Sensor sensor, int accuracy) {
-		// TODO Auto-generated method stub
-		
-	}
+	
 	
 }
