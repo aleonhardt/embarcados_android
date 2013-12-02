@@ -71,10 +71,11 @@ public class Gyroscoping {
             System.out.println("X: "+axisX+" Y: "+axisY+" Z: "+axisX);
             if(axisX > 3)
             	return PLAY;
-            if(axisY>5)
+            if(axisY>8.7)
             	return FREQ_UP;
-            if(axisY<-5)
+            if(axisY<-8.7)
             	return FREQ_DOWN;
+            
             return ERROR;
             
 	}
@@ -83,7 +84,7 @@ public class Gyroscoping {
 	{
 		if(event.sensor.getType()==Sensor.TYPE_ACCELEROMETER)
 		{
-			//return mathAccelerometer(event);
+			return mathAccelerometer(event);
 		}
 		else if(event.sensor.getType() == Sensor.TYPE_GYROSCOPE)
 		{

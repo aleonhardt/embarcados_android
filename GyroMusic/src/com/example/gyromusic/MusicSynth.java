@@ -47,7 +47,6 @@ public class MusicSynth extends Activity implements SensorEventListener {
 		sing.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 
-
 				music.stop();
 
 
@@ -109,6 +108,8 @@ public class MusicSynth extends Activity implements SensorEventListener {
 			music.frequencyUp();
 		if(whatToPlay ==Gyroscoping.FREQ_DOWN)
 			music.frequencyDown();
+		
+		
 
 
 
