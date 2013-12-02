@@ -21,7 +21,8 @@ public class MusicSynth extends Activity implements SensorEventListener {
 	final Gyroscoping gyroMath = new Gyroscoping();
 	private SensorManager mSensorManager;
 	private Sensor mAccelerometer, mGyroscope;
-	Thread musicThread = new Thread(music);
+	Thread musicThread = null;
+	boolean threadStarted = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -36,38 +37,24 @@ public class MusicSynth extends Activity implements SensorEventListener {
 		mSensorManager.registerListener(this, mGyroscope, SensorManager.SENSOR_DELAY_NORMAL);
 
 		// Register our receiver for the ACTION_SCREEN_OFF action. This will make our receiver
-        // code be called whenever the phone enters standby mode.
-        IntentFilter filter = new IntentFilter(Intent.ACTION_SCREEN_OFF);
-        registerReceiver(mReceiver, filter);
-		
+		// code be called whenever the phone enters standby mode.
+		IntentFilter filter = new IntentFilter(Intent.ACTION_SCREEN_OFF);
+		registerReceiver(mReceiver, filter);
+
 		final Button sing = (Button)findViewById(R.id.buttonSing);
-	
+
 
 		sing.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 
-				/*
-				music.addSquareWave(Gyroscoping.DO);
-				music.addSquareWave(Gyroscoping.RE);
-				music.addSquareWave(Gyroscoping.MI);
-				music.addSquareWave(Gyroscoping.FA);
-				music.addSquareWave(Gyroscoping.SOL);
-				music.addSquareWave(Gyroscoping.LA);
-				music.addSquareWave(Gyroscoping.SI);
-				/*music.addPureSine(Gyroscoping.DO);
-				music.addPureSine(Gyroscoping.RE);
-				music.addPureSine(Gyroscoping.MI);
-				music.addPureSine(Gyroscoping.FA);
-				music.addPureSine(Gyroscoping.SOL);
-				music.addPureSine(Gyroscoping.LA);
-				music.addPureSine(Gyroscoping.SI);
-				*/
+
 				music.stop();
+
 
 			}
 		});
-		
-		
+
+
 
 	}
 
@@ -81,7 +68,7 @@ public class MusicSynth extends Activity implements SensorEventListener {
 	@Override
 	public void onAccuracyChanged(Sensor sensor, int accuracy) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -104,49 +91,57 @@ public class MusicSynth extends Activity implements SensorEventListener {
 			music.frequency(Gyroscoping.LA);
 		else if(whatToPlay ==Gyroscoping.SI)
 			music.frequency(Gyroscoping.SI);
-		
+
 		if(whatToPlay == Gyroscoping.PLAY)
 		{
-		if(!musicThread.isAlive())
-			musicThread.start();
+			if(musicThread== null || (!musicThread.isAlive() && threadStarted == true))
+			{
+				musicThread = new Thread(music);
+				music.start();
+				musicThread.start();
+				threadStarted = true;
+			}
 		}
-		
+
 
 
 		if(whatToPlay ==Gyroscoping.FREQ_UP)
 			music.frequencyUp();
 		if(whatToPlay ==Gyroscoping.FREQ_DOWN)
 			music.frequencyDown();
-		
+
 
 
 	}
-	
-	 // BroadcastReceiver for handling ACTION_SCREEN_OFF.
-    public BroadcastReceiver mReceiver = new BroadcastReceiver() {
-        @Override
- public void onReceive(Context context, Intent intent) {
-            // Check action just to be on the safe side.
-            if (intent.getAction().equals(Intent.ACTION_SCREEN_OFF)) {
-                // Unregisters the listener and registers it again.
-            	mSensorManager.unregisterListener(MusicSynth.this);
-            	mSensorManager.registerListener(MusicSynth.this, mAccelerometer, SensorManager.SENSOR_DELAY_NORMAL);
-        		mSensorManager.registerListener(MusicSynth.this, mGyroscope, SensorManager.SENSOR_DELAY_NORMAL);
-            }
- }
-    };
-	
+
+	// BroadcastReceiver for handling ACTION_SCREEN_OFF.
+	public BroadcastReceiver mReceiver = new BroadcastReceiver() {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			// Check action just to be on the safe side.
+			if (intent.getAction().equals(Intent.ACTION_SCREEN_OFF)) {
+				// Unregisters the listener and registers it again.
+				mSensorManager.unregisterListener(MusicSynth.this);
+				mSensorManager.registerListener(MusicSynth.this, mAccelerometer, SensorManager.SENSOR_DELAY_NORMAL);
+				mSensorManager.registerListener(MusicSynth.this, mGyroscope, SensorManager.SENSOR_DELAY_NORMAL);
+			}
+		}
+	};
+
 	@Override
 	protected void onResume() {
 		super.onResume();
 		mSensorManager.registerListener(this, mAccelerometer, SensorManager.SENSOR_DELAY_NORMAL);
 		mSensorManager.registerListener(this, mGyroscope, SensorManager.SENSOR_DELAY_NORMAL);
+		IntentFilter filter = new IntentFilter(Intent.ACTION_SCREEN_OFF);
+		registerReceiver(mReceiver, filter);
 	}
-	
+
 	@Override
 	protected void onPause() {
 		super.onPause();
 		mSensorManager.unregisterListener(this);
+		unregisterReceiver(mReceiver);
 	}
 
 }
