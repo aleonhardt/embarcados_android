@@ -71,9 +71,9 @@ public class Gyroscoping {
             System.out.println("X: "+axisX+" Y: "+axisY+" Z: "+axisX);
             if(axisX > 3)
             	return PLAY;
-            if(axisY>8.7)
+            if(axisY>3)
             	return FREQ_UP;
-            if(axisY<-8.7)
+            if(axisZ>3)
             	return FREQ_DOWN;
             
             return ERROR;
