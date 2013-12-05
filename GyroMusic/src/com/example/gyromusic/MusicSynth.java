@@ -42,12 +42,27 @@ public class MusicSynth extends Activity implements SensorEventListener {
 		registerReceiver(mReceiver, filter);
 
 		final Button sing = (Button)findViewById(R.id.buttonSing);
-
+		sing.setText("START");
 
 		sing.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 
-				music.stop();
+				if(sing.getText().toString().equals("START")){
+
+					if(musicThread== null || (!musicThread.isAlive() && threadStarted == true))
+					{
+						musicThread = new Thread(music);
+						music.start();
+						musicThread.start();
+						threadStarted = true;
+						sing.setText("STOP THIS NONSENSE");
+					}
+				}
+				else
+				{
+					music.stop();
+					sing.setText("START");
+				}
 
 
 			}
