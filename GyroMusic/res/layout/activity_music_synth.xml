@@ -16,6 +16,15 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="STOP THIS NONSENSE" />
+        android:text="START" />
+    <Button
+        android:id="@+id/buttonConnect"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/buttonSing"
+        android:padding="20px"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Connect another phone" />
 
 </RelativeLayout>

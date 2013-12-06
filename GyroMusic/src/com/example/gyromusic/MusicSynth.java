@@ -19,11 +19,15 @@ public class MusicSynth extends Activity implements SensorEventListener {
 
 	final MusicTone music= new MusicTone();
 	final Gyroscoping gyroMath = new Gyroscoping();
+	private MusicServer musicServer;
+
 	private SensorManager mSensorManager;
+	
 	private Sensor mAccelerometer, mGyroscope;
 	Thread musicThread = null;
 	boolean threadStarted = false;
 
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -68,7 +72,19 @@ public class MusicSynth extends Activity implements SensorEventListener {
 			}
 		});
 
-
+		final Button connect = (Button)findViewById(R.id.buttonConnect);
+		connect.setOnClickListener(new View.OnClickListener() {
+			
+	
+			@Override
+			public void onClick(View v) {
+				musicServer = new MusicServer();
+				Thread serverThread = new Thread(musicServer);
+				serverThread.start();
+				
+				
+			}
+		});
 
 	}
 
