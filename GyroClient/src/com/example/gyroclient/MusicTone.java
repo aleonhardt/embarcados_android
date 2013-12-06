@@ -1,4 +1,4 @@
-package com.example.gyromusic;
+package com.example.gyroclient;
 
 import android.media.AudioFormat;
 import android.media.AudioManager;

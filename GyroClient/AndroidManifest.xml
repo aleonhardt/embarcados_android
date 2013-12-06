@@ -4,16 +4,19 @@
     android:versionCode="1"
     android:versionName="1.0" >
 
+     <uses-permission android:name="android.permission.INTERNET" />
     <uses-sdk
         android:minSdkVersion="9"
         android:targetSdkVersion="17" />
+	<uses-permission android:name="android.permission.RECORD_AUDIO" />
+	<uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>
     <application
         android:allowBackup="true"
         android:icon="@drawable/gyro"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="com.example.gyromusic.MusicSynth"
+            android:name="com.example.gyroclient.MusicSynth"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
