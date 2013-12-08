@@ -71,8 +71,10 @@ public class MusicServer implements Runnable{
 	            NetworkInterface intf = en.nextElement();
 	            for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements();) {
 	                InetAddress inetAddress = enumIpAddr.nextElement();
-	                if (!inetAddress.isLoopbackAddress()) {
-	                    return inetAddress.getHostAddress().toString();
+	                if (!inetAddress.isLoopbackAddress() && 
+	                		!inetAddress.isLinkLocalAddress() && 
+	                		inetAddress.isSiteLocalAddress()) {
+	                    return inetAddress.getHostAddress();
 	                }
 	            }
 	        }
