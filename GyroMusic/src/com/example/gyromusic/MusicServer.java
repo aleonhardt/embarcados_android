@@ -3,8 +3,14 @@ package com.example.gyromusic;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
+import java.util.Enumeration;
+
+import android.util.Log;
 
 public class MusicServer implements Runnable{
 
@@ -59,8 +65,21 @@ public class MusicServer implements Runnable{
 			return false;
 		return socket.isConnected();
 	}
-	public synchronized String getIP() {
-		return serverSocket.getInetAddress().toString();
+	public synchronized String getLocalIpAddress() {
+	    try {
+	        for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements();) {
+	            NetworkInterface intf = en.nextElement();
+	            for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements();) {
+	                InetAddress inetAddress = enumIpAddr.nextElement();
+	                if (!inetAddress.isLoopbackAddress()) {
+	                    return inetAddress.getHostAddress().toString();
+	                }
+	            }
+	        }
+	    } catch (SocketException ex) {
+	        Log.e("err", ex.toString());
+	    }
+	    return null;
 	}
 
 

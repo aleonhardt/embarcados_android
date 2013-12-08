@@ -83,7 +83,7 @@ public class MusicSynth extends Activity implements SensorEventListener {
 				Thread serverThread = new Thread(musicServer);//mostrar o ip de alguma forma
 				serverThread.start();
 				connect.setEnabled(false);
-				Toast.makeText(getApplicationContext(), "Server IP: "+musicServer.getIP(), Toast.LENGTH_LONG).show();
+				Toast.makeText(getApplicationContext(), "Server IP: "+musicServer.getLocalIpAddress(), Toast.LENGTH_LONG).show();
 				
 			}
 		});
