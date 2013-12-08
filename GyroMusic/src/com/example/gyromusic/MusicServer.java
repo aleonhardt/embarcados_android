@@ -12,11 +12,11 @@ public class MusicServer implements Runnable{
 	ServerSocket serverSocket;
 	Socket socket;
 	
-	Thread musicThread = null;
-	MusicTone music = new MusicTone();
+	
 	private DataInputStream dataInputStream;
 	private DataOutputStream dataOutputStream;
-	boolean threadStarted = false;
+
+	private int remoteFrequency;
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
@@ -27,24 +27,23 @@ public class MusicServer implements Runnable{
 				dataInputStream = new DataInputStream(socket.getInputStream());
 				dataOutputStream = new DataOutputStream(socket.getOutputStream());
 				
-				int frequency = Integer.parseInt(dataInputStream.readUTF());
-				//updateSecondChannelFrequency(); //implementar de alguma forma
-
-				/*music.frequency(frequency);
+				setRemoteFrequency(Integer.parseInt(dataInputStream.readUTF()));
 				
-				if(musicThread== null || (!musicThread.isAlive() && threadStarted == true))
-				{
-					musicThread = new Thread(music);
-					music.start();
-					musicThread.start();
-					threadStarted = true;
-				}*/
 
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
+	}
+	public int getRemoteFrequency() {
+		return remoteFrequency;
+	}
+	public void setRemoteFrequency(int remoteFrequency) {
+		this.remoteFrequency = remoteFrequency;
+	}
+	public boolean isConnected() {
+		return socket.isConnected();
 	}
 
 

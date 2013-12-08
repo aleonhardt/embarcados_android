@@ -23,6 +23,8 @@ public class MusicTone implements Runnable {
 
 	final AudioTrack audioTrack;
 
+	private int remoteFrequency=0;
+
 	public MusicTone() {
 		audioTrack = new AudioTrack(AudioManager.STREAM_MUSIC,
 				sampleRate, AudioFormat.CHANNEL_OUT_STEREO,
@@ -230,8 +232,16 @@ public class MusicTone implements Runnable {
 	public void run(){
 		while(!finished)
 		{
-			addPureSine(NOTES[frequency]);
+			if(remoteFrequency>0)
+				addMixedSounds(frequency, remoteFrequency);
+			else
+				addPureSine(NOTES[frequency]);
 		}
+	}
+
+	public void remoteFrequency(int remoteFrequency) {
+		this.remoteFrequency = remoteFrequency;
+		
 	}
 
 	

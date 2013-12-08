@@ -79,7 +79,7 @@ public class MusicSynth extends Activity implements SensorEventListener {
 			@Override
 			public void onClick(View v) {
 				musicServer = new MusicServer();
-				Thread serverThread = new Thread(musicServer);
+				Thread serverThread = new Thread(musicServer);//mostrar o ip de alguma forma
 				serverThread.start();
 				
 				
@@ -122,6 +122,7 @@ public class MusicSynth extends Activity implements SensorEventListener {
 		else if(whatToPlay ==Gyroscoping.SI)
 			music.frequency(Gyroscoping.SI);
 
+		
 		if(whatToPlay == Gyroscoping.PLAY)
 		{
 			if(musicThread== null || (!musicThread.isAlive() && threadStarted == true))
@@ -132,6 +133,10 @@ public class MusicSynth extends Activity implements SensorEventListener {
 				threadStarted = true;
 			}
 		}
+		
+		if(musicServer!=null && musicServer.isConnected())
+			music.remoteFrequency(musicServer.getRemoteFrequency());
+		
 
 
 
