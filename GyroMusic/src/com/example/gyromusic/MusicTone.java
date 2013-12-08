@@ -51,6 +51,50 @@ public class MusicTone implements Runnable {
 		audioTrack.write(sample, 0, numSamples);
 
 	}
+	
+	/*public void addPureSine(final int leftFreq, final int rightFreq, final int channel) // 0 = both, 1 = left, 2 = right
+	 {
+		double twopi = 8.*Math.atan(1.);
+		double phase = 0.0;
+		int amp = 10000;
+		int smooth = numSamples / 15;
+
+		// fill out the array
+		 
+		if(channel == 0) //both channels
+		{
+			for(int = 0; i < numSamples; i = i + 2) {
+				amp = smoothAmp(i, numSamples, smooth);
+				sample[i] = (short) (amp*Math.sin(phase));
+				phase += twopi*leftFreq/sampleRate;
+			}
+			for(int = 1; i < numSamples; i = i + 2) {
+				amp = smoothAmp(i, numSamples, smooth);
+				sample[i] = (short) (amp*Math.sin(phase));
+				phase += twopi*rightFreq/sampleRate;
+			}
+		}
+		else if(channel == 1) //left channel
+		{
+			for(int = 0; i < numSamples; i = i + 2) {
+				amp = smoothAmp(i, numSamples, smooth);
+				sample[i] = (short) (amp*Math.sin(phase));
+				phase += twopi*leftFreq/sampleRate;
+			}
+		 
+		}
+		else if(channel == 2) //right channel
+		{
+			for(int = 1; i < numSamples; i = i + 2) {
+				amp = smoothAmp(i, numSamples, smooth);
+				sample[i] = (short) (amp*Math.sin(phase));
+				phase += twopi*rightFreq/sampleRate;
+			}
+		}
+
+		audioTrack.write(sample, 0, numSamples);
+	}
+	*/
 
 	public void addSquareWave(final int freq) {
 

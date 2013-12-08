@@ -11,8 +11,12 @@ public class MusicServer implements Runnable{
 	public static final int PORT = 8888;
 	ServerSocket serverSocket;
 	Socket socket;
+	
+	Thread musicThread = null;
+	MusicTone music = new MusicTone();
 	private DataInputStream dataInputStream;
 	private DataOutputStream dataOutputStream;
+	boolean threadStarted = false;
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
@@ -24,10 +28,17 @@ public class MusicServer implements Runnable{
 				dataOutputStream = new DataOutputStream(socket.getOutputStream());
 				
 				int frequency = Integer.parseInt(dataInputStream.readUTF());
-				updateSecondChannelFrequency(); //implementar de alguma forma
+				//updateSecondChannelFrequency(); //implementar de alguma forma
 
-
-
+				/*music.frequency(frequency);
+				
+				if(musicThread== null || (!musicThread.isAlive() && threadStarted == true))
+				{
+					musicThread = new Thread(music);
+					music.start();
+					musicThread.start();
+					threadStarted = true;
+				}*/
 
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
