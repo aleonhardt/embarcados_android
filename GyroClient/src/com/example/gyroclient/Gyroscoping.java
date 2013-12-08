@@ -68,7 +68,7 @@ public class Gyroscoping {
             float axisZ = event.values[2];
 
                         
-            System.out.println("X: "+axisX+" Y: "+axisY+" Z: "+axisX);
+            //System.out.println("X: "+axisX+" Y: "+axisY+" Z: "+axisX);
             if(axisX > 3)
             	return PLAY;
             if(axisY>3)

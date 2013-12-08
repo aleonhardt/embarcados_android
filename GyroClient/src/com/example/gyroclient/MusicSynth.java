@@ -20,6 +20,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.text.InputType;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
@@ -60,6 +61,7 @@ public class MusicSynth extends Activity implements SensorEventListener {
 		IntentFilter filter = new IntentFilter(Intent.ACTION_SCREEN_OFF);
 		registerReceiver(mReceiver, filter);
 
+		dialogGetIp();
 
 		final Button connect = (Button)findViewById(R.id.buttonConnect);
 		connect.setOnClickListener(new View.OnClickListener() {
@@ -67,21 +69,31 @@ public class MusicSynth extends Activity implements SensorEventListener {
 
 			@Override
 			public void onClick(View v) {
-				try {
 
-					dialogGetIp();
-					if(serverIpAddress.length()>2)
-					{
-						socket = new Socket(serverIpAddress, PORT);
-						dataInputStream = new DataInputStream(socket.getInputStream());
-						dataOutputStream = new DataOutputStream(socket.getOutputStream());
-					}
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+
+
+				if(serverIpAddress.length()>2)
+				{
+					new Thread(new Runnable() {
+
+						@Override
+						public void run() {
+							try {
+								socket = new Socket(serverIpAddress, PORT);
+								dataInputStream = new DataInputStream(socket.getInputStream());
+								dataOutputStream = new DataOutputStream(socket.getOutputStream());
+							} catch (IOException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							}
+
+						}
+					});
+
 				}
 
 
+				connect.setEnabled(false);
 			}
 		});
 
@@ -133,21 +145,21 @@ public class MusicSynth extends Activity implements SensorEventListener {
 
 	private void dialogGetIp()
 	{
-		
+
 		AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
-		alert.setTitle("Title");
-		alert.setMessage("Message");
+		alert.setTitle("Server IP address");
 
 		// Set an EditText view to get user input 
 		final EditText input = new EditText(this);
+		input.setInputType(InputType.TYPE_CLASS_NUMBER|InputType.TYPE_CLASS_TEXT);
 		alert.setView(input);
 
 		alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-		public void onClick(DialogInterface dialog, int whichButton) {
-		  serverIpAddress = input.getText().toString();
-		  
-		  }
+			public void onClick(DialogInterface dialog, int whichButton) {
+				serverIpAddress = input.getText().toString();
+
+			}
 		});
 		alert.show();
 	}
