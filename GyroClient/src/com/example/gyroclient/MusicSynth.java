@@ -14,32 +14,35 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 
 
 public class MusicSynth extends Activity implements SensorEventListener {
 
-	final MusicTone music= new MusicTone();
+
 	final Gyroscoping gyroMath = new Gyroscoping();
 	public static final int PORT = 8888;
 	Socket socket;
 	private String serverIpAddress = "";
 	private DataInputStream dataInputStream;
 	private DataOutputStream dataOutputStream;
-	
+
 	private SensorManager mSensorManager;
-	
+
 	private Sensor mAccelerometer, mGyroscope;
 	Thread musicThread = null;
 	boolean threadStarted = false;
 
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -57,54 +60,32 @@ public class MusicSynth extends Activity implements SensorEventListener {
 		IntentFilter filter = new IntentFilter(Intent.ACTION_SCREEN_OFF);
 		registerReceiver(mReceiver, filter);
 
-		final Button sing = (Button)findViewById(R.id.buttonSing);
-		sing.setText("START");
-
-		sing.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {
-
-				if(sing.getText().toString().equals("START")){
-
-					if(musicThread== null || (!musicThread.isAlive() && threadStarted == true))
-					{
-						musicThread = new Thread(music);
-						music.start();
-						musicThread.start();
-						threadStarted = true;
-						sing.setText("STOP THIS NONSENSE");
-					}
-				}
-				else
-				{
-					music.stop();
-					sing.setText("START");
-				}
-
-
-			}
-		});
 
 		final Button connect = (Button)findViewById(R.id.buttonConnect);
 		connect.setOnClickListener(new View.OnClickListener() {
-			
-	
+
+
 			@Override
 			public void onClick(View v) {
-			//	musicServer = new MusicServer();
-			//	Thread serverThread = new Thread(musicServer);
-			//	serverThread.start();
-				
-				
+				try {
+
+					dialogGetIp();
+					if(serverIpAddress.length()>2)
+					{
+						socket = new Socket(serverIpAddress, PORT);
+						dataInputStream = new DataInputStream(socket.getInputStream());
+						dataOutputStream = new DataOutputStream(socket.getOutputStream());
+					}
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+
+
 			}
 		});
-		
-		try {
-			InetAddress serverAddr = InetAddress.getByName(serverIpAddress);
-			socket = new Socket(serverAddr, PORT);
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+
+
 
 	}
 
@@ -127,29 +108,14 @@ public class MusicSynth extends Activity implements SensorEventListener {
 
 		int whatToPlay = gyroMath.doTheMath(event);
 
-		if(whatToPlay ==Gyroscoping.DO)
-			music.frequency(Gyroscoping.DO);
-		else if(whatToPlay ==Gyroscoping.RE)
-			music.frequency(Gyroscoping.RE);
-		else if(whatToPlay ==Gyroscoping.MI)
-			music.frequency(Gyroscoping.MI);		
-		else if(whatToPlay ==Gyroscoping.FA)
-			music.frequency(Gyroscoping.FA);
-		else if(whatToPlay ==Gyroscoping.SOL)
-			music.frequency(Gyroscoping.SOL);
-		else if(whatToPlay ==Gyroscoping.LA)
-			music.frequency(Gyroscoping.LA);
-		else if(whatToPlay ==Gyroscoping.SI)
-			music.frequency(Gyroscoping.SI);
-
-		if(whatToPlay == Gyroscoping.PLAY)
+		if(whatToPlay ==Gyroscoping.DO || whatToPlay ==Gyroscoping.RE || whatToPlay ==Gyroscoping.MI ||
+				whatToPlay ==Gyroscoping.FA || whatToPlay ==Gyroscoping.SOL || whatToPlay ==Gyroscoping.LA || 
+				whatToPlay ==Gyroscoping.SI)
 		{
 			try {
 
-				dataInputStream = new DataInputStream(socket.getInputStream());
-				dataOutputStream = new DataOutputStream(socket.getOutputStream());
-				
-				dataOutputStream.writeUTF(Integer.toString(music.getFrequency()));
+				if(dataOutputStream!=null)				
+					dataOutputStream.writeUTF(Integer.toString(whatToPlay));
 
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
@@ -159,17 +125,32 @@ public class MusicSynth extends Activity implements SensorEventListener {
 
 
 
-		if(whatToPlay ==Gyroscoping.FREQ_UP)
-			music.frequencyUp();
-		if(whatToPlay ==Gyroscoping.FREQ_DOWN)
-			music.frequencyDown();
-		
-		
+
 
 
 
 	}
 
+	private void dialogGetIp()
+	{
+		
+		AlertDialog.Builder alert = new AlertDialog.Builder(this);
+
+		alert.setTitle("Title");
+		alert.setMessage("Message");
+
+		// Set an EditText view to get user input 
+		final EditText input = new EditText(this);
+		alert.setView(input);
+
+		alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+		public void onClick(DialogInterface dialog, int whichButton) {
+		  serverIpAddress = input.getText().toString();
+		  
+		  }
+		});
+		alert.show();
+	}
 	// BroadcastReceiver for handling ACTION_SCREEN_OFF.
 	public BroadcastReceiver mReceiver = new BroadcastReceiver() {
 		@Override

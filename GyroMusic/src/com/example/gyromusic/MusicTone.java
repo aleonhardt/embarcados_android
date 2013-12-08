@@ -52,7 +52,7 @@ public class MusicTone implements Runnable {
 
 	}
 	
-	/*public void addPureSine(final int leftFreq, final int rightFreq, final int channel) // 0 = both, 1 = left, 2 = right
+	/*public void addPureSine(final int frequency) 
 	 {
 		double twopi = 8.*Math.atan(1.);
 		double phase = 0.0;
@@ -61,40 +61,66 @@ public class MusicTone implements Runnable {
 
 		// fill out the array
 		 
-		if(channel == 0) //both channels
-		{
-			for(int = 0; i < numSamples; i = i + 2) {
+	
+			for(int = 0; i < numSamples; i ++) {
 				amp = smoothAmp(i, numSamples, smooth);
 				sample[i] = (short) (amp*Math.sin(phase));
 				phase += twopi*leftFreq/sampleRate;
 			}
-			for(int = 1; i < numSamples; i = i + 2) {
-				amp = smoothAmp(i, numSamples, smooth);
-				sample[i] = (short) (amp*Math.sin(phase));
-				phase += twopi*rightFreq/sampleRate;
-			}
-		}
-		else if(channel == 1) //left channel
-		{
-			for(int = 0; i < numSamples; i = i + 2) {
-				amp = smoothAmp(i, numSamples, smooth);
-				sample[i] = (short) (amp*Math.sin(phase));
-				phase += twopi*leftFreq/sampleRate;
-			}
-		 
-		}
-		else if(channel == 2) //right channel
-		{
-			for(int = 1; i < numSamples; i = i + 2) {
-				amp = smoothAmp(i, numSamples, smooth);
-				sample[i] = (short) (amp*Math.sin(phase));
-				phase += twopi*rightFreq/sampleRate;
-			}
-		}
+			
 
 		audioTrack.write(sample, 0, numSamples);
 	}
 	*/
+	
+	public void addSineTwoChannels(int leftFreq, int rightFreq)
+	{
+ //left channel
+		double twopi = 8.*Math.atan(1.);
+		double phase = 0.0;
+		int amp = 10000;
+		int smooth = numSamples / 15;
+		for(int i= 0; i < numSamples; i = i + 2) {
+			amp = smoothAmp(i, numSamples, smooth);
+			sample[i] = (short) (amp*Math.sin(phase));
+			phase += twopi*leftFreq/sampleRate;
+		}
+	 
+
+ //right channel
+	
+		for(int i = 1; i < numSamples; i = i + 2) {
+			amp = smoothAmp(i, numSamples, smooth);
+			sample[i] = (short) (amp*Math.sin(phase));
+			phase += twopi*rightFreq/sampleRate;
+		}
+		
+		audioTrack.write(sample, 0, numSamples);
+	
+	}
+	
+	public void addMixedSounds(int leftFreq, int rightFreq)
+	{
+		//left channel sine
+				double twopi = 8.*Math.atan(1.);
+				double phase = 0.0;
+				int amp = 10000;
+				int smooth = numSamples / 15;
+				for(int i= 0; i < numSamples; i = i + 2) {
+					amp = smoothAmp(i, numSamples, smooth);
+					sample[i] = (short) (amp*Math.sin(phase));
+					phase += twopi*leftFreq/sampleRate;
+				}
+				
+				//right channel square wave
+				for (int i = 1; i < numSamples; i=i+2) {
+
+					amp = smoothAmp(i, numSamples, smooth);
+					sample[i] = (short) ((amp*Math.sin(phase))+(amp*Math.sin(3*phase)/3)+(amp*Math.sin(5*phase)/5)+(amp*Math.sin(7*phase)/7)+(amp*Math.sin(9*phase)/9)+(amp*Math.sin(11*phase)/11));
+					phase += twopi*rightFreq/sampleRate;
+				}
+				audioTrack.write(sample, 0, numSamples);
+	}
 
 	public void addSquareWave(final int freq) {
 

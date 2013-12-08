@@ -10,21 +10,13 @@
     tools:context=".MusicSynth" >
 
     <Button
-        android:id="@+id/buttonSing"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="START" />
-    <Button
         android:id="@+id/buttonConnect"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_below="@+id/buttonSing"
+        android:layout_centerVertical="true"
         android:padding="20px"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Connect another phone" />
+        android:text="Connect to the server"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
 
 </RelativeLayout>
