@@ -11,24 +11,36 @@ public class MusicServer implements Runnable{
 	public static final int PORT = 8888;
 	ServerSocket serverSocket;
 	Socket socket;
-	
-	
+
+
 	private DataInputStream dataInputStream;
 	private DataOutputStream dataOutputStream;
 
 	private int remoteFrequency;
+
+	MusicServer()
+	{
+		try {
+			serverSocket = new ServerSocket(PORT);
+
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
 		while(true){
 			try {
-				serverSocket = new ServerSocket(PORT);
+
 				socket = serverSocket.accept();
 				dataInputStream = new DataInputStream(socket.getInputStream());
 				dataOutputStream = new DataOutputStream(socket.getOutputStream());
-				
+
 				setRemoteFrequency(Integer.parseInt(dataInputStream.readUTF()));
-				
+
 
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
@@ -36,14 +48,19 @@ public class MusicServer implements Runnable{
 			}
 		}
 	}
-	public int getRemoteFrequency() {
+	public synchronized int getRemoteFrequency() {
 		return remoteFrequency;
 	}
-	public void setRemoteFrequency(int remoteFrequency) {
+	public synchronized void setRemoteFrequency(int remoteFrequency) {
 		this.remoteFrequency = remoteFrequency;
 	}
-	public boolean isConnected() {
+	public synchronized boolean isConnected() {
+		if(socket == null)
+			return false;
 		return socket.isConnected();
+	}
+	public synchronized String getIP() {
+		return serverSocket.getInetAddress().toString();
 	}
 
 

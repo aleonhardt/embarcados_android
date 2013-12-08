@@ -13,6 +13,7 @@ import android.content.IntentFilter;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 
 public class MusicSynth extends Activity implements SensorEventListener {
@@ -81,7 +82,8 @@ public class MusicSynth extends Activity implements SensorEventListener {
 				musicServer = new MusicServer();
 				Thread serverThread = new Thread(musicServer);//mostrar o ip de alguma forma
 				serverThread.start();
-				
+				connect.setEnabled(false);
+				Toast.makeText(getApplicationContext(), "Server IP: "+musicServer.getIP(), Toast.LENGTH_LONG).show();
 				
 			}
 		});
