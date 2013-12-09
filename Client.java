@@ -7,9 +7,13 @@ import java.net.Socket;
 
 public class Client {
 
+	public static final int DO = 220;
+	public static final int FA = 294;
+	public static final int LA = 349;
+	
 	public static void main(String[] args) {
 		try {
-			String ip = "127.0.0.1";
+			String ip = "192.168.0.2";
 
 			Socket socket = new Socket(ip, 8888);
 
@@ -17,13 +21,13 @@ public class Client {
 			DataOutputStream outputStream= new DataOutputStream(socket.getOutputStream());
 			
 			
-			outputStream.writeUTF("440");
+			outputStream.writeUTF(Integer.toString(DO));
 			Thread.sleep(5000);
 
-			outputStream.writeUTF("660");
+			outputStream.writeUTF(Integer.toString(FA));
 			Thread.sleep(5000);
 			
-			outputStream.writeUTF("1200");
+			outputStream.writeUTF(Integer.toString(LA));
 			outputStream.close();
 			socket.close();
 			

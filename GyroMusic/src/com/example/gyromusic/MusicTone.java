@@ -233,7 +233,7 @@ public class MusicTone implements Runnable {
 		while(!finished)
 		{
 			if(remoteFrequency>0)
-				addMixedSounds(frequency, remoteFrequency);
+				addMixedSounds(NOTES[frequency], remoteFrequency);
 			else
 				addPureSine(NOTES[frequency]);
 		}
