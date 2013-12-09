@@ -5,7 +5,7 @@
  * should not be modified by hand.
  */
 
-package com.example.gyromusic;
+package com.example.gyroclient;
 
 public final class R {
     public static final class attr {

@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
 
-import com.example.gyromusic.R;
+import com.example.gyroclient.R;
 
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -74,12 +74,14 @@ public class MusicSynth extends Activity implements SensorEventListener {
 
 				if(serverIpAddress.length()>2)
 				{
+					
 					new Thread(new Runnable() {
 
 						@Override
 						public void run() {
 							try {
 								socket = new Socket(serverIpAddress, PORT);
+								System.out.println("connected. IP: "+serverIpAddress);
 								dataInputStream = new DataInputStream(socket.getInputStream());
 								dataOutputStream = new DataOutputStream(socket.getOutputStream());
 							} catch (IOException e1) {
@@ -88,12 +90,12 @@ public class MusicSynth extends Activity implements SensorEventListener {
 							}
 
 						}
-					});
+					}).start();
 
 				}
 
 
-				connect.setEnabled(false);
+				//connect.setEnabled(false);
 			}
 		});
 
@@ -127,8 +129,10 @@ public class MusicSynth extends Activity implements SensorEventListener {
 			try {
 
 				if(dataOutputStream!=null)				
+				{
 					dataOutputStream.writeUTF(Integer.toString(whatToPlay));
-
+					System.out.println("sent: "+Integer.toString(whatToPlay));
+				}
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -158,7 +162,7 @@ public class MusicSynth extends Activity implements SensorEventListener {
 		alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int whichButton) {
 				serverIpAddress = input.getText().toString();
-
+				System.out.println("IP: " +serverIpAddress);
 			}
 		});
 		alert.show();
