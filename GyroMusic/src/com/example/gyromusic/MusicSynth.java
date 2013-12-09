@@ -1,5 +1,7 @@
 package com.example.gyromusic;
 
+
+
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -23,12 +25,12 @@ public class MusicSynth extends Activity implements SensorEventListener {
 	private MusicServer musicServer;
 
 	private SensorManager mSensorManager;
-	
+
 	private Sensor mAccelerometer, mGyroscope;
 	Thread musicThread = null;
 	boolean threadStarted = false;
 
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -75,8 +77,8 @@ public class MusicSynth extends Activity implements SensorEventListener {
 
 		final Button connect = (Button)findViewById(R.id.buttonConnect);
 		connect.setOnClickListener(new View.OnClickListener() {
-			
-	
+
+
 			@Override
 			public void onClick(View v) {
 				musicServer = new MusicServer();
@@ -84,7 +86,7 @@ public class MusicSynth extends Activity implements SensorEventListener {
 				serverThread.start();
 				connect.setEnabled(false);
 				Toast.makeText(getApplicationContext(), "Server IP: "+musicServer.getLocalIpAddress(), Toast.LENGTH_LONG).show();
-				
+
 			}
 		});
 
@@ -109,22 +111,12 @@ public class MusicSynth extends Activity implements SensorEventListener {
 
 		int whatToPlay = gyroMath.doTheMath(event);
 
-		if(whatToPlay ==Gyroscoping.DO)
-			music.frequency(Gyroscoping.DO);
-		else if(whatToPlay ==Gyroscoping.RE)
-			music.frequency(Gyroscoping.RE);
-		else if(whatToPlay ==Gyroscoping.MI)
-			music.frequency(Gyroscoping.MI);		
-		else if(whatToPlay ==Gyroscoping.FA)
-			music.frequency(Gyroscoping.FA);
-		else if(whatToPlay ==Gyroscoping.SOL)
-			music.frequency(Gyroscoping.SOL);
-		else if(whatToPlay ==Gyroscoping.LA)
-			music.frequency(Gyroscoping.LA);
-		else if(whatToPlay ==Gyroscoping.SI)
-			music.frequency(Gyroscoping.SI);
+		if(whatToPlay ==Gyroscoping.DO || whatToPlay ==Gyroscoping.RE || whatToPlay ==Gyroscoping.MI ||
+				whatToPlay ==Gyroscoping.FA || whatToPlay ==Gyroscoping.SOL || whatToPlay ==Gyroscoping.LA || 
+				whatToPlay ==Gyroscoping.SI)
+			music.frequency(whatToPlay);
 
-		
+
 		if(whatToPlay == Gyroscoping.PLAY)
 		{
 			if(musicThread== null || (!musicThread.isAlive() && threadStarted == true))
@@ -135,10 +127,13 @@ public class MusicSynth extends Activity implements SensorEventListener {
 				threadStarted = true;
 			}
 		}
-		
+
 		if(musicServer!=null && musicServer.isConnected())
 			music.remoteFrequency(musicServer.getRemoteFrequency());
-		
+
+		if(musicServer!=null && !musicServer.isConnected())
+			music.remoteFrequency(0);
+
 
 
 
@@ -146,8 +141,8 @@ public class MusicSynth extends Activity implements SensorEventListener {
 			music.frequencyUp();
 		if(whatToPlay ==Gyroscoping.FREQ_DOWN)
 			music.frequencyDown();
-		
-		
+
+
 
 
 

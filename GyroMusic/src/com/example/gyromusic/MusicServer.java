@@ -2,6 +2,7 @@ package com.example.gyromusic;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.EOFException;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
@@ -29,7 +30,7 @@ public class MusicServer implements Runnable{
 		try {
 			serverSocket = new ServerSocket(PORT);
 
-			
+
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -41,12 +42,23 @@ public class MusicServer implements Runnable{
 		while(true){
 			try {
 
-				socket = serverSocket.accept();
-				dataInputStream = new DataInputStream(socket.getInputStream());
-				dataOutputStream = new DataOutputStream(socket.getOutputStream());
+				if(socket == null)
+				{
+					socket = serverSocket.accept();
+					dataInputStream = new DataInputStream(socket.getInputStream());
+					dataOutputStream = new DataOutputStream(socket.getOutputStream());
+				}
+				
+				try{
+					setRemoteFrequency(Integer.parseInt(dataInputStream.readUTF()));
 
-				setRemoteFrequency(Integer.parseInt(dataInputStream.readUTF()));
-
+				} catch (EOFException e) {
+					System.out.println("closing");
+					dataInputStream.close();
+					socket.close();
+					serverSocket.close();
+					return;
+				}
 
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
@@ -63,25 +75,25 @@ public class MusicServer implements Runnable{
 	public synchronized boolean isConnected() {
 		if(socket == null)
 			return false;
-		return socket.isConnected();
+		return !socket.isClosed();
 	}
 	public synchronized String getLocalIpAddress() {
-	    try {
-	        for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements();) {
-	            NetworkInterface intf = en.nextElement();
-	            for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements();) {
-	                InetAddress inetAddress = enumIpAddr.nextElement();
-	                if (!inetAddress.isLoopbackAddress() && 
-	                		!inetAddress.isLinkLocalAddress() && 
-	                		inetAddress.isSiteLocalAddress()) {
-	                    return inetAddress.getHostAddress();
-	                }
-	            }
-	        }
-	    } catch (SocketException ex) {
-	        Log.e("err", ex.toString());
-	    }
-	    return null;
+		try {
+			for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements();) {
+				NetworkInterface intf = en.nextElement();
+				for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements();) {
+					InetAddress inetAddress = enumIpAddr.nextElement();
+					if (!inetAddress.isLoopbackAddress() && 
+							!inetAddress.isLinkLocalAddress() && 
+							inetAddress.isSiteLocalAddress()) {
+						return inetAddress.getHostAddress();
+					}
+				}
+			}
+		} catch (SocketException ex) {
+			Log.e("err", ex.toString());
+		}
+		return null;
 	}
 
 
