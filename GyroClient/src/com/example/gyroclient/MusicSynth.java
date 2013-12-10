@@ -193,6 +193,17 @@ public class MusicSynth extends Activity implements SensorEventListener {
 	@Override
 	protected void onPause() {
 		super.onPause();
+		if(socket!=null)
+		{
+			try {
+				dataOutputStream.close();
+				socket.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+		}
 		mSensorManager.unregisterListener(this);
 		unregisterReceiver(mReceiver);
 	}
